@@ -35,21 +35,27 @@ def index():
 
 @app.get('/home')
 def home():
-    serve_template('index.html')
+    return serve_template('index.html')
 
 
 @app.get('/login')
 def login():
-    serve_template('login.html')
+    return serve_template('login.html')
 
 
 @app.get('/signup')
 def signup():
-    serve_template('signup.html')
+    return serve_template('signup.html')
 
 @app.get('/view')
 def view():
-    serve_template('view.html')
+    sid = request.get_cookie('id')
+    if (sid):
+        username = sessions[sid]['username']
+        items = accounts[username]['items']
+        return serve_template('view.html', items=items)
+    else:
+        return serve_template('view.html', logged_in=False)
 
 
 def loginPOST():
@@ -63,7 +69,9 @@ def loginPOST():
         
         # if this failes bad password
         if (check(data['password'], user_data['salt'], user_data['hashed'])):
-            s
+            sid = get_ID()
+            sessions[sid] = {'logged_in': True, 'username': data['username']}
+            response.set_cookie('id', sid)
         else:
             serve_template('login.html', bad_pw=True)
     except:
@@ -73,13 +81,28 @@ def loginPOST():
 @app.post('/signup')
 def signupPOST():
     salt = gen_salt()
+    username = request.POST.username
     data = {
-        'username': request.POST.username
+        'username': username
         'hashed': hashpw(request.POST.password, salt)
-        'salt': salt
+        'salt': salt,
+        'items': {}
     }
-    accounts.append(data)
-    serve_template('signup.html', success=True)
+    accounts[username] = data
+    return serve_template('signup.html', success=True)
+
+
+@app.post('/view')
+def viewPOST():
+    sid = request.get_cookie('id')
+    if (sid):
+        name = request.POST.name
+        quantity = request.POST.quantity
+        username = sessions[sid]['username']
+        items = accounts[username]['items']
+        items['name'] = name
+        items['quantity'] = quantity
+    redirect('/view')
 
 
 @app.get('/static/<filepath:path>')
