@@ -4,6 +4,7 @@ import os
 
 ROOT = '/home/matias/data/programming/git/t1hacktogether'
 STATIC = os.path.join(ROOT, 'static')
+print(STATIC)
 STATIC = ROOT
 DEBUG = True
 if DEBUG:
@@ -27,9 +28,10 @@ def home():
     serve_template('index.html')
 
 
-@app.get('/docs/<filepath:path>')
-def docs():
-    return static_file()
+@app.get('/static/<filepath:path>')
+def docs(filepath):
+    print(filepath)
+    return static_file(filepath, root=STATIC)
 
 
 def serve_template(name, **kwargs):
