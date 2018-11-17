@@ -1,3 +1,23 @@
-#item {
+/*#item {
   outline: 1px solid #888888;
+}
+div {
+  background-color: #888800;
+}
+body {
+  font-family: "Comic Sans MS";
+  background-color: #FF00FF;
+  color: #00FFFF;
+}
+input {
+  font-family: "Comic Sans MS";
+  background-color: #00FF00;
+  color: #FF00FF;
+}*/
+body {
+  background-image: url("../img/bg.jpg");
+}
+* {
+  text-align: center;
+
 }
