@@ -5,7 +5,7 @@ STOP_RENDERING = runtime.STOP_RENDERING
 __M_dict_builtin = dict
 __M_locals_builtin = locals
 _magic_number = 10
-_modified_time = 1542489815.1676264
+_modified_time = 1542493234.2344928
 _enable_loop = True
 _template_filename = 'docs/login.html'
 _template_uri = 'login.html'
@@ -16,7 +16,7 @@ _exports = []
 def render_body(context,bad_pw=False,not_found=False,logged_in=False,**pageargs):
     __M_caller = context.caller_stack._push_frame()
     try:
-        __M_locals = __M_dict_builtin(bad_pw=bad_pw,pageargs=pageargs,logged_in=logged_in,not_found=not_found)
+        __M_locals = __M_dict_builtin(logged_in=logged_in,bad_pw=bad_pw,not_found=not_found,pageargs=pageargs)
         __M_writer = context.writer()
         __M_writer('\n\n<!doctype html>\n\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n\n  <title>Login</title>\n  <meta name="description" content="Login">\n  <meta name="author" content="Team 1">\n\n  <link rel="stylesheet" href="/static/css/styles.css">\n  <link rel="stylesheet" href="/static/css/bootstrap.min.css">\n</head>\n\n<body>\n  <div class="container">\n  <h1>Login</h1>\n')
         if bad_pw:

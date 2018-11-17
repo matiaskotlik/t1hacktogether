@@ -7,7 +7,7 @@ from uuid import uuid4
 
 ROOT = '/home/matias/data/programming/git/t1hacktogether'
 STATIC = os.path.join(ROOT, 'static')
-DEBUG = True
+DEBUG = False
 if DEBUG:
     PORT = 8080
 else:
@@ -158,6 +158,11 @@ def get_username():
         return user
     except KeyError:
         return None
+
+@app.get('/logout')
+def logout():
+    response.set_cookie('sid', get_ID())
+    return serve_template('logout.html')
 
 def serve_template(name, **kwargs):
     return lookup.get_template(name).render(**kwargs)
