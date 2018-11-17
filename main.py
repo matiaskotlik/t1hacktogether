@@ -4,8 +4,6 @@ import os
 
 ROOT = '/home/matias/data/programming/git/t1hacktogether'
 STATIC = os.path.join(ROOT, 'static')
-print(STATIC)
-STATIC = ROOT
 DEBUG = True
 if DEBUG:
     PORT = 8080
@@ -16,6 +14,7 @@ app = default_app()
 
 lookup = TemplateLookup(directories=['./docs'],
                         module_directory='./tmp/mako_modules')
+
 
 @app.get('/')
 @app.get('/index')
@@ -28,9 +27,23 @@ def home():
     serve_template('index.html')
 
 
+@app.get('/login')
+def login():
+    serve_template('login.html')
+
+
+@app.get('signup')
+def signup():
+    serve_template('signup.html')
+
+@app.get('view')
+def view():
+    serve_template('view.html')
+
+
 @app.get('/static/<filepath:path>')
 def docs(filepath):
-    print(filepath)
+    print(STATIC, filepath)
     return static_file(filepath, root=STATIC)
 
 
