@@ -1,10 +1,9 @@
-class Database():
-	def __init__():
+class Database(object):
+	def __init__(self):
 		self.data = {}
 
-	def save(filename):
+	def save(self, filename):
 		pass # save to a file here
 
-	def load(filename):
-		self.data = {}
+	def load(self, filename):
 		pass # load from file here if there is no file then give an empty dict
