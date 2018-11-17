@@ -1,3 +1,5 @@
+<%page args="success=False, logged_in=False" />
+
 <!doctype html>
 
 <html lang="en">
@@ -8,25 +10,31 @@
   <meta name="description" content="Signup">
   <meta name="author" content="Team 1">
 
-  <link rel="stylesheet" href="../static/css/styles.css">
+  <link rel="stylesheet" href="/static/css/styles.css">
 
 </head>
 
 <body>
   <h1>Sign Up</h1>
-  <form>
-    <div id="login">
-      <label for="username">Username: </label>
-      <input type="text" name="username"><br>
-      <label for="password">Password: </label>
-      <input type="password" name="password"><br>
-      <label for="password">Confirm Password: </label>
-      <input type="password" name="password-confirm"><br>
-      <input type="submit" value="Submit">
-    </div>
-  </form>
-  <a href="index.html"><input type="button" value="Back To Home"></a>
+  % if success:
+    <p>You have successfully signed in</p>
+    <p>Click <a href="/view">here</a> to check your inventory</p>
+  % endif
+  % if logged_in:
+    <p>You are already signed in</p>
+  % else:
+    <form target="_self" method="POST" action="/signup">
+      <div id="signup">
+        <label for="username">Username: </label>
+        <input type="text" name="username"><br>
+        <label for="password">Password: </label>
+        <input type="password" name="password"><br>
+        <input type="submit" value="Submit">
+      </div>
+    </form>
+  %endif
+  <a href="/home"><input type="button" value="Back To Home"></a>
 
-  <script src="../static/js/scripts.js"></script>
+  <script src="/static/js/scripts.js"></script>
 </body>
 </html>

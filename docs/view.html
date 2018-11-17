@@ -1,3 +1,5 @@
+<%page args="logged_in=True, success=False, items={}" />
+
 <!doctype html>
 
 <html lang="en">
@@ -8,21 +10,35 @@
   <meta name="description" content="View">
   <meta name="author" content="Team 1">
 
-  <link rel="stylesheet" href="../static/css/styles.css">
+  <link rel="stylesheet" href="/static/css/styles.css">
 
 </head>
 
 <body>
   <h1>Inventory</h1>
-  <div id="item">
-    <p>Item A</p>
-    <p>56</p>
-    <input type="button" value="Change Item">
-    <input type="button" value="Remove Item">
-  </div>
-  <input type="button" value="Add Item"><br>
-  <a href="index.html"><input type="button" value="Back To Home"></a>
+  % if success:
+    <p>Added item.</p>
+  % endif
+  % if logged_in:
+    <form method="POST" action="/view">
+      <label for="name">Name: </label>
+      <input type="text" name="name"><br>
+      <label for="quantity">Quantity: </label>
+      <input type="text" name="quantity"><br>
+      <input type="submit" value="Add Item">
+    </form>
+    % for item in items:
+      <div class="item">
+        <p>${item['name']}</p>
+        <p>${item['quantity']}</p>
+        <a href="?remove=${item['name']}">Remove Item</a>
+      </div>
+    % endfor
+  % else:
+    <p>You are not logged in. Click <a href="/login">here</a> to login.</p>
+  % endif
+  <a href="/home"><input type="button" value="Back To Home"></a>
 
-  <script src="../static/js/scripts.js"></script>
+  <script src="/static/js/scripts.js"></script>
 </body>
 </html>

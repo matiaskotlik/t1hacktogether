@@ -19,13 +19,13 @@ lookup = TemplateLookup(directories=['./docs'],
                         module_directory='./tmp/mako_modules')
 
 accounts = Database()
-accounts.load()
+accounts.load('accounts')
 
 # we don't save or load this database but we can if we want to
 sessions = Database()
 
 def get_ID():
-    return uuid4()
+    return str(uuid4())
 
 @app.get('/')
 @app.get('/index')
@@ -40,42 +40,61 @@ def home():
 
 @app.get('/login')
 def login():
+    if get_username():
+        return serve_template('login.html', logged_in=True)
     return serve_template('login.html')
 
 
 @app.get('/signup')
 def signup():
+    if get_username():
+        return serve_template('signup.html', logged_in=True)
     return serve_template('signup.html')
 
 @app.get('/view')
 def view():
-    sid = request.get_cookie('id')
-    if (sid):
-        username = sessions[sid]['username']
-        items = accounts[username]['items']
+    user = get_username()
+    if user:
+        rem = request.GET.remove
+        if rem:
+            items = accounts.data[user]['items']
+            for item in items:
+                if item['name'] == rem:
+                    items.remove(item)
+                    break
+        items = accounts.data[user]['items']
         return serve_template('view.html', items=items)
-    else:
-        return serve_template('view.html', logged_in=False)
+    print('this guy tryna view his stuff without loggin in get outta here')
+    return serve_template('view.html', logged_in=False)
 
 
+@app.post('/login')
 def loginPOST():
     data = {
         'username': request.POST.username,
         'password': request.POST.password
     }
+    print(data, 'logging in')
     try:
+        print('trying to login somebody:', request.POST.username)
+        print('heres a list of accounts', accounts.data)
+
         # if this failes not found
         user_data = accounts.data[data['username']]
+
+        print('ok username is good lets check their password')
         
         # if this failes bad password
         if (check(data['password'], user_data['salt'], user_data['hashed'])):
-            sid = get_ID()
-            sessions[sid] = {'logged_in': True, 'username': data['username']}
-            response.set_cookie('id', sid)
+            print('ok password good let em in')
+            set_login_cookie(data['username'])
+            redirect('/view')
         else:
-            serve_template('login.html', bad_pw=True)
-    except:
-        serve_template('login.html', not_found=True)
+            print('some bitch entered a bad password')
+            return serve_template('login.html', bad_pw=True)
+    except KeyError:
+        print('ok their username doesn\' exist abort abort')
+        return serve_template('login.html', not_found=True)
 
 
 @app.post('/signup')
@@ -83,33 +102,58 @@ def signupPOST():
     salt = gen_salt()
     username = request.POST.username
     data = {
-        'username': username
-        'hashed': hashpw(request.POST.password, salt)
+        'username': username,
+        'hashed': hashpass(request.POST.password, salt),
         'salt': salt,
-        'items': {}
+        'items': []
     }
-    accounts[username] = data
+    print(username + ' just signed up')
+    accounts.data[username] = data
+
+
+    print('setting their cookie')
+    set_login_cookie(username)
+
     return serve_template('signup.html', success=True)
 
 
 @app.post('/view')
 def viewPOST():
-    sid = request.get_cookie('id')
-    if (sid):
+    user = get_username()
+    if user:
         name = request.POST.name
         quantity = request.POST.quantity
-        username = sessions[sid]['username']
-        items = accounts[username]['items']
-        items['name'] = name
-        items['quantity'] = quantity
-    redirect('/view')
+        items = accounts.data[user]['items']
+        items.append({
+            'name': name,
+            'quantity': quantity
+        })
+        return serve_template('view.html', success=True, items=items)
+    else:
+        print('no id not adding item')
+        return serve_template('view.html', success=False)
+    
 
 
 @app.get('/static/<filepath:path>')
 def docs(filepath):
-    print(STATIC, filepath)
     return static_file(filepath, root=STATIC)
 
+def set_login_cookie(username):
+    sid = get_ID()
+    sessions.data[sid] = {'logged_in': True, 'username': username}
+    response.set_cookie('id', sid)
+
+def get_username():
+    try:
+        user = sessions.data[request.get_cookie('id')]['username']
+        print('getting username', user)
+        print('sessions', sessions.data)
+        print('id', request.get_cookie('id'))
+        print('username', user)
+        return user
+    except KeyError:
+        return None
 
 def serve_template(name, **kwargs):
     return lookup.get_template(name).render(**kwargs)

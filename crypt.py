@@ -6,9 +6,9 @@ def gen_salt():
     return gensalt()
 
 
-def hashpw(plain, salt):
+def hashpass(plain, salt):
     return hashpw(b64encode(sha256(plain.encode()).digest()), salt)
 
 
 def check(plain, salt, hashed):
-    return hash(plain, salt) == hashed
+    return hashpass(plain, salt) == hashed
