@@ -1,22 +1,39 @@
-/*#item {
-  outline: 1px solid #888888;
-}
-div {
-  background-color: #888800;
-}
-body {
-  font-family: "Comic Sans MS";
-  background-color: #FF00FF;
-  color: #00FFFF;
-}
-input {
-  font-family: "Comic Sans MS";
-  background-color: #00FF00;
-  color: #FF00FF;
-}*/
-body {
-  background-image: url("../img/bg.jpg");
-}
+
 * {
   text-align: center;
+}
+html {
+  height: 100%;
+}
+body {
+  background-image: url("../img/bg.jpg");
+  height: 93.5%;
+}
+.container {
+  padding-top: 3%;
+  margin-top: 3%;
+  min-width: 90%;
+  min-height: 90%;
+  background-color: #DDDDDD;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+.remove-item {
+  margin: 5px 0 5px 20px;
+  border-bottom: 1px solid black;
+}
+.text-right {
+  line-height: 38px;
+}
+
+a.remove-item .btn {
+  padding: 0;
+}
+
+.col-1 {
+  border-top: 2px solid black;
+}
+
+.item:first-of-type .col-1 {
+  border-top: 0;
 }

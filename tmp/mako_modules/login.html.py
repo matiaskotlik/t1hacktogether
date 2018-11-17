@@ -5,7 +5,7 @@ STOP_RENDERING = runtime.STOP_RENDERING
 __M_dict_builtin = dict
 __M_locals_builtin = locals
 _magic_number = 10
-_modified_time = 1542487857.2632382
+_modified_time = 1542489815.1676264
 _enable_loop = True
 _template_filename = 'docs/login.html'
 _template_uri = 'login.html'
@@ -18,7 +18,7 @@ def render_body(context,bad_pw=False,not_found=False,logged_in=False,**pageargs)
     try:
         __M_locals = __M_dict_builtin(bad_pw=bad_pw,pageargs=pageargs,logged_in=logged_in,not_found=not_found)
         __M_writer = context.writer()
-        __M_writer('\n\n<!doctype html>\n\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n\n  <title>Login</title>\n  <meta name="description" content="Login">\n  <meta name="author" content="Team 1">\n\n  <link rel="stylesheet" href="/static/css/styles.css">\n  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">\n</head>\n\n<body>\n\n  <h1>Login</h1>\n')
+        __M_writer('\n\n<!doctype html>\n\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n\n  <title>Login</title>\n  <meta name="description" content="Login">\n  <meta name="author" content="Team 1">\n\n  <link rel="stylesheet" href="/static/css/styles.css">\n  <link rel="stylesheet" href="/static/css/bootstrap.min.css">\n</head>\n\n<body>\n  <div class="container">\n  <h1>Login</h1>\n')
         if bad_pw:
             __M_writer('    <p>Bad password</p>\n')
         if not_found:
@@ -27,7 +27,7 @@ def render_body(context,bad_pw=False,not_found=False,logged_in=False,**pageargs)
             __M_writer('    <p>You are already logged in</p>\n')
         else:
             __M_writer('    <form action="/login" method="POST">\n      <div id="login">\n        <input type="text" name="username" placeholder="Username"><br><br>\n        <input type="password" name="password" placeholder="Password"><br><br>\n        <input type="submit" value="Submit" class="btn btn-success">\n      </div>\n    </form>\n    <p>Don\'t have an account? <a href="signup"><input type="button" value="Sign Up" class="btn btn-secondary"></a></p>\n')
-        __M_writer('  <a href="/home"><input type="button" value="Back To Home" class="btn btn-primary"></a>\n\n  <script src="/static/js/scripts.js"></script>\n</body>\n</html>\n')
+        __M_writer('  <p><a href="/home"><input type="button" value="Back To Home" class="btn btn-primary"></a></p>\n  </div>\n  <script src="/static/js/scripts.js"></script>\n</body>\n</html>\n')
         return ''
     finally:
         context.caller_stack._pop_frame()

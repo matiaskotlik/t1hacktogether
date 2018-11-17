@@ -19,7 +19,7 @@ lookup = TemplateLookup(directories=['./docs'],
                         module_directory='./tmp/mako_modules')
 
 accounts = Database()
-accounts.load('accounts')
+accounts.load('accounts.db')
 
 # we don't save or load this database but we can if we want to
 sessions = Database()
@@ -70,24 +70,25 @@ def view():
 
 @app.post('/login')
 def loginPOST():
-    data = {
+    logindats = {
         'username': request.POST.username,
         'password': request.POST.password
     }
-    print(data, 'logging in')
+    print(logindats, 'logging in')
     try:
-        print('trying to login somebody:', request.POST.username)
+        print('trying to login somebody:', logindats['username'])
         print('heres a list of accounts', accounts.data)
+        print('is it in there?', logindats['username'] in accounts.data)
 
         # if this failes not found
-        user_data = accounts.data[data['username']]
+        user_data = accounts.data[logindats['username']]
 
         print('ok username is good lets check their password')
         
         # if this failes bad password
-        if (check(data['password'], user_data['salt'], user_data['hashed'])):
+        if (check(logindats['password'], user_data['salt'], user_data['hashed'])):
             print('ok password good let em in')
-            set_login_cookie(data['username'])
+            set_login_cookie(logindats['username'])
             redirect('/view')
         else:
             print('some bitch entered a bad password')
@@ -109,6 +110,7 @@ def signupPOST():
     }
     print(username + ' just signed up')
     accounts.data[username] = data
+    accounts.save('accounts.db')
 
 
     print('setting their cookie')
@@ -122,13 +124,15 @@ def viewPOST():
     user = get_username()
     if user:
         name = request.POST.name
-        quantity = request.POST.quantity
-        items = accounts.data[user]['items']
-        items.append({
-            'name': name,
-            'quantity': quantity
-        })
-        return serve_template('view.html', success=True, items=items)
+        if name:
+            quantity = request.POST.quantity
+            items = accounts.data[user]['items']
+            items.append({
+                'name': name,
+                'quantity': quantity
+            })
+            accounts.save('accounts.db')
+            return serve_template('view.html', success=True, items=items)
     else:
         print('no id not adding item')
         return serve_template('view.html', success=False)
