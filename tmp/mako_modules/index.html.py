@@ -5,7 +5,7 @@ STOP_RENDERING = runtime.STOP_RENDERING
 __M_dict_builtin = dict
 __M_locals_builtin = locals
 _magic_number = 10
-_modified_time = 1542485403.877458
+_modified_time = 1542487808.4230516
 _enable_loop = True
 _template_filename = 'docs/index.html'
 _template_uri = 'index.html'
@@ -18,7 +18,7 @@ def render_body(context,**pageargs):
     try:
         __M_locals = __M_dict_builtin(pageargs=pageargs)
         __M_writer = context.writer()
-        __M_writer('<!doctype html>\n\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n\n  <title>Home</title>\n  <meta name="description" content="Home">\n  <meta name="author" content="Team 1">\n\n  <link rel="stylesheet" href="/static/css/styles.css">\n\n</head>\n\n<body>\n  <h1>Home</h1>\n  <a href="/view"><input type="button" value="View Inventory"></a><br>\n  <a href="/login"><input type="button" value="Login"></a>\n  \n  <script src="/static/js/scripts.js"></script>\n</body>\n</html>\n')
+        __M_writer('<!doctype html>\n\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n\n  <title>Home</title>\n  <meta name="description" content="Home">\n  <meta name="author" content="Team 1">\n\n  <link rel="stylesheet" href="/static/css/styles.css">\n  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">\n</head>\n\n<body>\n  <h1>Home</h1>\n  <a href="/view"><input type="button" value="View Inventory" class="btn btn-secondary"></a><br>\n  <a href="/login"><input type="button" value="Login" class="btn btn-secondary"></a>\n\n  <script src="/static/js/scripts.js"></script>\n</body>\n</html>\n')
         return ''
     finally:
         context.caller_stack._pop_frame()
