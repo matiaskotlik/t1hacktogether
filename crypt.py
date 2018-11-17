@@ -6,7 +6,7 @@ def gen_salt():
     return gensalt()
 
 
-def hash(plain, salt):
+def hashpw(plain, salt):
     return hashpw(b64encode(sha256(plain.encode()).digest()), salt)
 
 

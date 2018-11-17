@@ -5,7 +5,7 @@ STOP_RENDERING = runtime.STOP_RENDERING
 __M_dict_builtin = dict
 __M_locals_builtin = locals
 _magic_number = 10
-_modified_time = 1542469021.2173896
+_modified_time = 1542473360.2329988
 _enable_loop = True
 _template_filename = 'docs/index.html'
 _template_uri = 'index.html'
@@ -18,7 +18,7 @@ def render_body(context,**pageargs):
     try:
         __M_locals = __M_dict_builtin(pageargs=pageargs)
         __M_writer = context.writer()
-        __M_writer('<!doctype html>\n\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n\n  <title>The HTML5 Herald</title>\n  <meta name="description" content="The HTML5 Herald">\n  <meta name="author" content="SitePoint">\n\n  <link rel="stylesheet" href="css/styles.css?v=1.0">\n\n</head>\n\n<body>\n  <script src="js/scripts.js"></script>\n</body>\n</html>')
+        __M_writer('<!doctype html>\n\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n\n  <title>Home</title>\n  <meta name="description" content="Home">\n  <meta name="author" content="Team 1">\n\n  <link rel="stylesheet" href="/static/css/styles.css">\n\n</head>\n\n<body>\n  <script src="/static/js/scripts.js"></script>\n</body>\n</html>')
         return ''
     finally:
         context.caller_stack._pop_frame()

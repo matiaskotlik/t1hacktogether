@@ -2,6 +2,8 @@ from bottle import static_file, redirect, default_app, request, response
 from mako.lookup import TemplateLookup
 import os
 from database import Database
+from crypt import *
+from uuid import uuid4
 
 ROOT = '/home/matias/data/programming/git/t1hacktogether'
 STATIC = os.path.join(ROOT, 'static')
@@ -18,6 +20,12 @@ lookup = TemplateLookup(directories=['./docs'],
 
 accounts = Database()
 accounts.load()
+
+# we don't save or load this database but we can if we want to
+sessions = Database()
+
+def get_ID():
+    return uuid4()
 
 @app.get('/')
 @app.get('/index')
@@ -49,15 +57,29 @@ def loginPOST():
         'username': request.POST.username,
         'password': request.POST.password
     }
+    try:
+        # if this failes not found
+        user_data = accounts.data[data['username']]
+        
+        # if this failes bad password
+        if (check(data['password'], user_data['salt'], user_data['hashed'])):
+            s
+        else:
+            serve_template('login.html', bad_pw=True)
+    except:
+        serve_template('login.html', not_found=True)
 
 
 @app.post('/signup')
 def signupPOST():
+    salt = gen_salt()
     data = {
-        'username': request.POST.username,
-        'password': request.POST.password
+        'username': request.POST.username
+        'hashed': hashpw(request.POST.password, salt)
+        'salt': salt
     }
-    # todo add to database here
+    accounts.append(data)
+    serve_template('signup.html', success=True)
 
 
 @app.get('/static/<filepath:path>')
