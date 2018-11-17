@@ -1,6 +1,7 @@
 from bottle import static_file, redirect, default_app, request, response
 from mako.lookup import TemplateLookup
 import os
+from database import Database
 
 ROOT = '/home/matias/data/programming/git/t1hacktogether'
 STATIC = os.path.join(ROOT, 'static')
@@ -15,6 +16,8 @@ app = default_app()
 lookup = TemplateLookup(directories=['./docs'],
                         module_directory='./tmp/mako_modules')
 
+accounts = Database()
+accounts.load()
 
 @app.get('/')
 @app.get('/index')
@@ -32,13 +35,29 @@ def login():
     serve_template('login.html')
 
 
-@app.get('signup')
+@app.get('/signup')
 def signup():
     serve_template('signup.html')
 
-@app.get('view')
+@app.get('/view')
 def view():
     serve_template('view.html')
+
+
+def loginPOST():
+    data = {
+        'username': request.POST.username,
+        'password': request.POST.password
+    }
+
+
+@app.post('/signup')
+def signupPOST():
+    data = {
+        'username': request.POST.username,
+        'password': request.POST.password
+    }
+    # todo add to database here
 
 
 @app.get('/static/<filepath:path>')
